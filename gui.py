@@ -22,8 +22,6 @@ layout = [
 ]
 
 window = sg.Window("Roundbot",layout)
-bytesToSend = ConvertStringToBytes("Hello")
-bus.write_i2c_block_data(address,cmd,bytesToSend)
 
 while True:
     event, values = window.read()
