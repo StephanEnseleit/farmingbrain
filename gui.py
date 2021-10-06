@@ -17,6 +17,7 @@ layout = [
     [sg.Text('Winkel und Radius eingeben')],
     [sg.Text('Winkel'), sg.InputText(key="degree")],
     [sg.Text('Radius'), sg.InputText(key="radius")],
+    [sg.Text('Höhe'), sg.InputText(key="height")],
     [sg.Button('Senden')]
 ]
 
@@ -29,12 +30,17 @@ while True:
     if event == "Close" or event == sg.WIN_CLOSED:
         break
     print('Folgende Eingabe erkannt:')
-    print(values['degree'],values['radius'])
+    print(values['degree'],values['radius'],height['height'])
     degree = values["degree"]
     radius = values["radius"]
+    height = values["height"]
     senddeg = ConvertStringToBytes(degree)
     sendrad = ConvertStringToBytes(radius)
-    data = ""
-    bus.write_i2c_block_data(address,len(senddeg),senddeg)
-    bus.write_i2c_block_data(address,len(sendrad),sendrad)
+    sendh = ConvertStringToBytes(height)
+    data = []
+    # 0 indicates degree value being sent
+    # 1 indicates radius value being sent
+    bus.write_i2c_block_data(address,0,senddeg)
+    bus.write_i2c_block_data(address,1,sendrad)
+    bus.write_i2c_block_data(address,2,sendh)
 window.close()
